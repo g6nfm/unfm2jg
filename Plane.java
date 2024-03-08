@@ -213,7 +213,7 @@ public class Plane {
         deltaf = deltaf / 3F;
     }
 
-    public void d(Graphics2D rd, int i, int j, int k, int l, int i1, int j1, int k1, int l1, boolean flag, int i2) {
+    public void d(Graphics2D rd, int i, int j, int k, int l, int i1, int j1, int k1, int l1, boolean flag, int i2, boolean blackout) {
         if (master != 0) {
             if (av > 1500) {
                 n = 8;
@@ -672,6 +672,9 @@ public class Plane {
             if (ai1[k10] < 10) {
                 j10++;
             }
+            if(ai15[k10] <= -30000 || ai14[k10] <= -30000 || ai14[k10] >= 30000) {
+                flag2 = false;
+            }
         }
 
         if (i2 != -1) {
@@ -700,9 +703,11 @@ public class Plane {
         if (j9 == n || j8 == n || l8 == n || l9 == n) {
             flag2 = false;
         }
+        /*
         if (Medium.trk && (j9 != 0 || j8 != 0 || l8 != 0 || l9 != 0)) {
             flag2 = false;
         }
+         */
         if (j10 != 0) {
             flag = true;
         }
@@ -900,7 +905,8 @@ public class Plane {
             } else {
                 float af[] = new float[3];
                 Color.RGBtoHSB(oc[0], oc[1], oc[2], af);
-                color = Color.getHSBColor(0.0F, 0.0F, af[2] * f1);
+                // This changes the preview color of the stage
+                color = Color.getHSBColor(hsb[0], hsb[1], hsb[2] * f1);
             }
             int l11 = color.getRed();
             int j13 = color.getGreen();
@@ -938,7 +944,11 @@ public class Plane {
                     }
                 } while (++l15 < 8);
             }
-            rd.setColor(new Color(l11, j13, k14));
+            if (blackout){
+                rd.setColor(new Color(0,0,0));
+            } else {
+                rd.setColor(new Color(l11, j13, k14));
+            }
             rd.fillPolygon(ai14, ai15, n);
             if (Medium.trk && gr == -10) {
                 flag = false;
